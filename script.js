@@ -13,7 +13,20 @@ async function cargarExcelBuscador() {
         const data = await response.arrayBuffer();
         const workbook = XLSX.read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        baseOficinas = XLSX.utils.sheet_to_json(sheet);
+        // Convertir CLAVE a string con ceros a la izquierda (4 dígitos)
+baseOficinas = XLSX.utils.sheet_to_json(sheet).map(row => {
+    let clave = row.CLAVE?.toString().trim() ?? "";
+
+    // Normalizar clave a 4 dígitos
+    if (clave && clave.length < 4) {
+        clave = clave.padStart(4, "0");
+    }
+
+    return {
+        ...row,
+        CLAVE: clave
+    };
+});
 
         console.log("🟢 Base de oficinas cargada:", baseOficinas);
     } catch (e) {
