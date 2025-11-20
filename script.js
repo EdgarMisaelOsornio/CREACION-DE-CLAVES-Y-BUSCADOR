@@ -76,6 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `)
             .join("");
+            // === CUANDO SELECCIONAMOS UN RESULTADO ===
+document.querySelectorAll(".search-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const clave = item.dataset.clave;
+
+        const textarea = document.getElementById("oficinas");
+        let contenido = textarea.value.trim();
+
+        // Agregar clave a la lista sin borrar lo existente
+        if (contenido.length > 0) {
+            contenido += "\n" + clave;
+        } else {
+            contenido = clave;
+        }
+
+        textarea.value = contenido;
+
+        // Limpiar buscador
+        inputBuscador.value = "";
+        boxResultados.style.display = "none";
+        boxResultados.innerHTML = "";
+    });
+});
     });
 });
 /* ============================================================ */
